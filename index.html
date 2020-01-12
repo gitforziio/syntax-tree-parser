@@ -60,8 +60,17 @@
                     <div class="form-group row">
                         <label for="the_text" class="col-sm-2 col-form-label">树表达式</label>
                         <div class="col-sm-10">
-                            <!-- <input type="test" class="form-control" name="the_text" id="the_text" value="S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]"> -->
-                            <input type="test" class="form-control" name="the_text" id="the_text" value="dj:主谓{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }">
+                            <!-- <input type="text" class="form-control" name="the_text" id="the_text" value="S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]"> -->
+                            <textarea type="textarea" class="form-control" name="the_text" id="the_text" rows="3">dj:主谓{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
+dj:主谓{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }
+np:定中{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }
+np:联合{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  };
+vp:状中{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
+vp:述宾{  vp:状中[  np:单词(n) , vp:单词(v)  ] , np:单词(n)  }
+dj:存在{  np:单词(n) , vp:单词(v) , np:单词(n)  };np:粘合定中{  vp:状中[  np:单词(n) , vp:单词(v)  ] , n  }
+dj:主谓{  np:粘合定中[  n , v  ] , np:单词(n)  }
+np:定中{  np:粘合定中[  n , v  ] , np:单词(n)  }
+np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                         </div>
                     </div>
                     <button type="button" name="the_submit_btn" id="the_submit_btn" class="btn btn-primary">画出来！</button>
@@ -95,7 +104,9 @@
     <script type="text/javascript">
         // console.log('天地好在否！');
         d3.select("#the_submit_btn").on("click",()=>{
-            drawTree('#the_svg_wrap',treeParser(d3.select("#the_text").node().value));
+            l = d3.select("#the_text").node().value.split(/[\n;]+/);
+            console.log(l);
+            l.forEach((t,i)=>{drawTree('#the_svg_wrap',treeParser(t))});
         });
     </script>
 

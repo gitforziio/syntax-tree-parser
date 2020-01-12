@@ -5,7 +5,7 @@ function treeParser(t) {
     //S[    S1_SR[   1Thead_n[  1T[ _1[一] , te[十] ] , _n[ _u[九] ]  ] , wa[万] , Rr[ _u[六] ]   ]    ]
     //{"name":"S","children":[  ]}
 
-    t = `${t.trim().replace(/([\n\s\t]+)/g,' ')}`;
+    t = `${t.trim().replace(/([\n\r\s\t]+)/g,' ')}`;
     let t_0 = `${t.replace(/([\{\(])/g,'[').replace(/([\}\)])/g,']').replace(/([\:])/g,'_')}`;
     let t_1 = t_0.replace(/\[/g,":[");
     console.log(t_1);
@@ -57,7 +57,7 @@ function treeParser(t) {
 
 function createTree(data) {
 
-    let width = 800;
+    let width = 1600;
 
     let tree = data =>{
         const root = d3.hierarchy(data);
@@ -76,7 +76,7 @@ function createTree(data) {
     });
 
     const svg = d3.create('svg')
-        .attr("viewBox", [0, 0, width, x1 - x0 + root.dx * 2]);
+        .attr("viewBox", [-20, -20, width+40, x1 - x0 + root.dx * 2+40]);
         ;
 
     // const svg = d3.select('#the_svg_wrap').append('svg').attr("id","the_svg")
