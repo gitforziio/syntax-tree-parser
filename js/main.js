@@ -57,7 +57,7 @@ function treeParser(t) {
 
 function createTree(data) {
 
-    let width = 1600;
+    let width = 600;
 
     let tree = data =>{
         const root = d3.hierarchy(data);
@@ -76,7 +76,7 @@ function createTree(data) {
     });
 
     const svg = d3.create('svg')
-        .attr("viewBox", [-20, -20, width+40, x1 - x0 + root.dx * 2+40]);
+        .attr("viewBox", [-60, -20, width+20, x1 - x0 + root.dx * 2+40]);
         ;
 
     // const svg = d3.select('#the_svg_wrap').append('svg').attr("id","the_svg")
