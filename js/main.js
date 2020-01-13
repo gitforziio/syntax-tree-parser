@@ -71,12 +71,14 @@ function treeParser(t_p) {
 
 function createTree(data) {
 
-    let width = 600;
+    let width = 200;
 
     let tree = data =>{
         const root = d3.hierarchy(data);
-        root.dx = 16;
+        // root.dx = 16;
+        root.dx = 64;
         root.dy = width / (root.height + 1);
+        // return d3.tree().nodeSize([root.dx,root.dy])(root);
         return d3.cluster().nodeSize([root.dx,root.dy])(root);
     }
 
@@ -90,7 +92,8 @@ function createTree(data) {
     });
 
     const svg = d3.create('svg')
-        .attr("viewBox", [-60, -20, width+20, x1 - x0 + root.dx * 2+40]);
+        // .attr("viewBox", [-60, -20, width+20, x1 - x0 + root.dx * 2+40]);
+        .attr("viewBox", [-20, -20, x1 - x0 + root.dx * 2+40, width+60]);
         ;
 
     // const svg = d3.select('#the_svg_wrap').append('svg').attr("id","the_svg")
@@ -98,7 +101,8 @@ function createTree(data) {
     //     ;
 
     const g = svg.append('g')
-        .attr("transform", `translate(${root.dy / 3},${root.dx - x0})`)
+        // .attr("transform", `translate(${root.dy / 3},${root.dx - x0})`)
+        .attr("transform", `translate(${root.dx - x0},${root.dy / 3})`)
         ;
 
     const link = g.append("g")
@@ -109,18 +113,23 @@ function createTree(data) {
     .selectAll("path")
         .data(root.links())
         .join("path")
-            .attr("d", d3.linkHorizontal()
-                .x(d => d.y)
-                .y(d => d.x))
+            // .attr("d", d3.linkHorizontal()
+            //     .x(d => d.y)
+            //     .y(d => d.x))
+            .attr("d", d3.linkVertical()
+                .x(d => d.x)
+                .y(d => d.y))
         ;
 
     const node = g.append("g")
+        // .attr("stroke-linejoin", "round")
         .attr("stroke-linejoin", "round")
         .attr("stroke-width", 3)
     .selectAll("g")
     .data(root.descendants())
     .join("g")
-        .attr("transform", d => `translate(${d.y},${d.x})`)
+        // .attr("transform", d => `translate(${d.y},${d.x})`)
+        .attr("transform", d => `translate(${d.x},${d.y})`)
         ;
 
     node.append("circle")
@@ -129,12 +138,18 @@ function createTree(data) {
         ;
 
     node.append("text")
-        .attr("dy", "0.31em")
-        .attr("x", d => d.children ? -6 : 6)
-        .attr("text-anchor", d => d.children ? "end" : "start")
+        // .attr("dy", "0.31em")
+        .attr("dy", d => d.children ? "-0.6em" : "1.2em")
+        // .attr("x", d => d.children ? -6 : 6)
+        .attr("text-anchor", "middle")
+        // .attr("text-anchor", d => d.children ? "end" : "start")
         .text(d => d.data.name)
+        .attr("textLength", d=>{return d.data.name.length>6?64:null})
+        .attr("lengthAdjust", d=>{return d.data.name.length>6?"spacingAndGlyphs":"spacing"})
     .clone(true).lower()
+        // .attr("stroke", "red")
         .attr("stroke", "white")
+        .attr("stroke-width", 2)
         ;
 
     return svg.node();

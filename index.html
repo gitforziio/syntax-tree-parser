@@ -61,7 +61,8 @@
                         <label for="the_text" class="col-sm-2 col-form-label">树表达式</label>
                         <div class="col-sm-10">
                             <!-- <input type="text" class="form-control" name="the_text" id="the_text" value="S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]"> -->
-                            <textarea type="textarea" class="form-control" name="the_text" id="the_text" rows="3">dj:主谓{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
+                            <textarea type="textarea" class="form-control" name="the_text" id="the_text" rows="3">决策树1[C有空缺[A是空缺原文[Q有选项，A是选项之一[多选式完形填空],Q为空[生成式完形填空]]],C无空缺[Q有空缺，A是空缺原文。[Q有选项，A是选项之一[多选式完形填空],Q无选项[生成式完形填空]],Q有选项，A是选项之一[多选],Q仅题干[Q独立[A为C的片段[片段抽取],A自由[自由作答/生成式]],Q在序列中，X提供对话历史[A为C的片段[对话式片段抽取],A自由[对话式自由作答/对话+生成式]]]]]
+dj:主谓{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
 {dj:主谓{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }}
 [np:定中{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }]
 (np:联合{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  });
@@ -116,6 +117,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                 try {
                     drawTree('#the_svg_wrap',treeParser(t));
                 } catch(e) {
+                    console.log(e);
                     d3.select('#the_svg_wrap').append('p').text("error");
                 }
             });
