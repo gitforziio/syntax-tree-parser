@@ -16,8 +16,9 @@
     <style type="text/css">
         body{background: #eee;}
         .container.main{background: #fff;}
-        #the_box{min-height: 80vh;}
+        #the_box,#the_cfg_box{min-height: 80vh;}
         .span-nav-desc{font-size: 0.6em;}
+        #the_rules{font-family: "SourceCodePro","Courier New","Courier","Console"}
     </style>
 
 </head>
@@ -96,6 +97,132 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
 
 
 
+    <div class="container my-5 py-5 main" id="the_cfg_box">
+        <div class="row"><div class="col-12"><h4>填写</h4></div></div>
+        <div class="row">
+            <div class="col">
+                <form name="the_cfg_form" class="container">
+                    <div class="form-group row">
+                        <label for="the_rules" class="col-sm-2 col-form-label">规则集</label>
+                        <div class="col-sm-10">
+                            <textarea type="textarea" class="form-control" name="the_rules" id="the_rules" rows="3">d -> 一;
+d -> 二;
+d -> 三;
+d -> 四;
+d -> 五;
+d -> 六;
+d -> 七;
+d -> 八;
+d -> 九;
+d -> 两;
+w -> 十;
+w -> 百;
+w -> 千;
+w -> 万;
+w -> 亿;
+z -> 零;
+T -> 十
+D -> d
+L -> N z;
+N -> D w;
+N -> N d;
+N -> N w;
+N -> L d;
+N -> T d;
+S -> N;
+
+</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="the_tests" class="col-sm-2 col-form-label">句子集</label>
+                        <div class="col-sm-10">
+                            <textarea type="textarea" class="form-control" name="the_tests" id="the_tests" rows="3">十 一 万 二
+五 亿 零 三 百 二
+三 万 八
+三 万 八 千
+四 万 万
+四 万 万 五 千 万
+四 万 万 五 千 八 百 零 三 万
+四 万 万 五 千 八 百 零 三 万 六 千 零 五 十 五
+四 万 万 亿
+五 千 万 亿
+
+三 百 零 五 亿 七 千 万 零 六 百 二 十 三
+四 万 万 三 千 万
+两 亿 四 千 五 百 万 零 两 百 八
+两 百 八 十 二
+五 十 万
+三 百 零 二 万
+一 万 三 千
+一 万 三 千 五 百
+十 八 万
+三 百 二 十 万
+
+
+九 十 五 亿 三 千 七 百 八 十 六 万 五 千 四 百 四 十
+九 千 九 百 九 十 九 万 九 千 九 百 九 十 九 亿 九 千 九 百 九 十 九 万 九 千 九 百 九 十 九
+零 八 十 二
+八 百 二 十 零
+八 千 零 五 百
+三 百 零 二 十 五 万 三 千
+三 百 二 十 五 万 零 四 千 亿
+两 十
+两 十 三
+三 十 两 万
+一 万 两
+三 百 零 两
+五 十 百
+五 十 千
+十 八 千
+十 八 百
+三 百 二 万
+六 千 五 亿
+三 万 五 十 亿
+百 二
+百 六 十
+千 五 十 一
+万 八 千 六 百 零 一
+八 六 百
+三 二 万
+三 百 万 二
+五 十 万 五
+八 百 万 二
+六 千 万 八
+五 百 六 十 万 二
+三 百 亿 六
+三 百 八 万
+六 千 七 亿
+五 万 六 亿
+五 万 零 七 百 二 亿
+五 千 三 百 五 十 万 零 三 百 八 亿
+五 十 二 万 四 千 万
+三 百 万 五 万 五
+三 亿 五 百
+六 千 亿 二 十
+十 八 万 三 十 六
+六 千 五 亿 三 千 万
+二 十 八 万 六 亿
+二 千 三 百 五 十 万 三 千 零 一 万
+</textarea>
+                        </div>
+                    </div>
+                    <button type="button" name="the_cfg_submit_btn" id="the_cfg_submit_btn" class="btn btn-primary">画出来！</button>
+                    <button type="button" name="the_cfg_cleaning_btn" id="the_cfg_cleaning_btn" class="btn btn-info">清空</button>
+                </form>
+            </div>
+        </div>
+        <hr />
+        <div class="row mt-5 mb-3"><div class="col"><h4>出图</h4></div></div>
+        <div class="row">
+            <div class="col-12">
+                <div id="the_cfg_svg_wrap"></div>
+            </div>
+        </div>
+    </div>
+
+
+
     <footer class="pt-4 pb-2 bg-dark text-white">
       <div class="container text-center">
         <p>Github: <a href="https://github.com/gitforziio/syntax-tree-parser" target="_blank">@gitforziio/syntax-tree-parser</a></p>
@@ -107,10 +234,30 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.bootcss.com/d3/5.12.0/d3.min.js"></script>
 
+    <script type="text/javascript" src="js/cfgParser.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
     <script type="text/javascript">
-        // console.log('天地好在否！');
+        d3.select("#the_cfg_submit_btn").on("click",()=>{
+            let v = d3.select("#the_rules").node().value;
+            let rs = rules(v);
+            rs.forEach((r,i)=>{
+                let p = rulePrinter(r)
+                d3.select('#the_cfg_svg_wrap').append('p').text(`【${i+1}】【${p}】`);
+                // try {
+                //     drawTree('#the_svg_wrap',treeParser(t));
+                // } catch(e) {
+                //     console.log(e);//throw(e);
+                //     d3.select('#the_svg_wrap').append('p').text("error");
+                // }
+            });
+        });
+        d3.select("#the_cfg_cleaning_btn").on("click",()=>{
+            d3.selectAll('#the_cfg_svg_wrap *').remove();
+        })
+    </script>
+
+    <script type="text/javascript">
         const tw = 64;
         d3.select("#the_submit_btn").on("click",()=>{
             l = d3.select("#the_text").node().value.split(/[\n;]+/);
