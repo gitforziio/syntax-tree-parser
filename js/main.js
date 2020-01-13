@@ -148,10 +148,12 @@ function createTree(data) {
         // // .attr("textLength", d=>{return d.data.name.length>6?64:null})
         // .attr("textLength", d=>{console.log(d);console.log(this);return d.node().getBoundingClientRect().width>d.dx?d.dx:null})
         // .attr("lengthAdjust", d=>{return d.data.name.length>6?"spacingAndGlyphs":"spacing"})
-    .clone(true).lower()
-        // .attr("stroke", "red")
         .attr("stroke", "white")
         .attr("stroke-width", 2)
+    .clone(true)//.lower()
+        // .attr("stroke", "red")
+        .attr("stroke", "transparent")
+        .attr("stroke-width", 0)
         ;
 
     // svg.selectAll("text").nodes()

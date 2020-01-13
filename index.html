@@ -128,7 +128,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
             });
             d3.selectAll("#the_svg_wrap svg text").nodes()
                 .forEach(e=>{
-                    let w = e.getBBox().width;
+                    let w = e.getBBox().width;// 【Firefox SVG getBBox方法返回'NS_ERROR_FAILURE'错误分析】 https://www.cnblogs.com/jaxu/p/4193456.html
                     console.log(w);
                     d3.select(e)
                         .attr("textLength", d=>{return w>tw?tw:null})
