@@ -110,7 +110,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
             l = d3.select("#the_text").node().value.split(/[\n;]+/);
             console.log(l);
             l.forEach((t,i)=>{
-                d3.select('#the_svg_wrap').append('p').text(`【${i}】【${t}】`);
+                d3.select('#the_svg_wrap').append('p').text(`【${i+1}】【${t}】`);
                 t = treeFormater(t);
                 d3.select('#the_svg_wrap').append('p').text(`【${t}】`);
                 try {
