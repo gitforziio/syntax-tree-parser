@@ -1,11 +1,12 @@
 
-function treeParser(t) {
+function treeFormater(t) {
     //S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]
     //S:[S1_SR:[1Thead_n:[1T:[_1:[一],te:[十]],_n:[_u:[九]]],wa:[万],Rr:[_u:[六]]]]
     //S[    S1_SR[   1Thead_n[  1T[ _1[一] , te[十] ] , _n[ _u[九] ]  ] , wa[万] , Rr[ _u[六] ]   ]    ]
     //{"name":"S","children":[  ]}
 
     t = `${t.trim().replace(/([\n\r\s\t]+)/g,' ')}`;
+    t = `${t.trim().replace(/(,+)/g,',')}`;
 
     let t_0 = `${t.replace(/([\{\(])/g,'[').replace(/([\}\)])/g,']').replace(/([\:])/g,'_')}`;
     t_0 = `${t_0.trim().replace(/^\[(.+)\]$/,'$1')}`;
@@ -23,10 +24,15 @@ function treeParser(t) {
     let t_p = `${t_2.replace(/("[^":]+"):/g,'{$1:').replace(/(\])/g,'$1}')}`;
     console.log(t_p);
 
+    return t_p;
+}
+
+
+
+function treeParser(t_p) {
+
     let t_j = JSON.parse(t_p);
     console.log(t_j);
-
-
 
     function make(j,o) {// j is an object
         if (o == undefined) {o={};};
@@ -59,7 +65,6 @@ function treeParser(t) {
     }
 
     return make(t_j);
-
 }
 
 
