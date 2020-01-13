@@ -91,7 +91,7 @@ function createTree(data) {
         if (d.x < x0) x0 = d.x;
     });
 
-    const svg = d3.create('svg')
+    const svg = d3.create('svg').attr("class","svg_tree")
         // .attr("viewBox", [-60, -20, width+20, x1 - x0 + root.dx * 2+40]);
         .attr("viewBox", [-20, -20, x1 - x0 + root.dx * 2+40, width+60]);
         ;
@@ -145,13 +145,25 @@ function createTree(data) {
         .attr("text-anchor", "middle")
         // .attr("text-anchor", d => d.children ? "end" : "start")
         .text(d => d.data.name)
-        .attr("textLength", d=>{return d.data.name.length>6?64:null})
-        .attr("lengthAdjust", d=>{return d.data.name.length>6?"spacingAndGlyphs":"spacing"})
+        // // .attr("textLength", d=>{return d.data.name.length>6?64:null})
+        // .attr("textLength", d=>{console.log(d);console.log(this);return d.node().getBoundingClientRect().width>d.dx?d.dx:null})
+        // .attr("lengthAdjust", d=>{return d.data.name.length>6?"spacingAndGlyphs":"spacing"})
     .clone(true).lower()
         // .attr("stroke", "red")
         .attr("stroke", "white")
         .attr("stroke-width", 2)
         ;
+
+    // svg.selectAll("text").nodes()
+    //     .forEach(e=>{
+    //         console.log(e);
+    //         let w = e.getBBox().width;
+    //         console.log(w);
+    //         d3.select(e)
+    //             .attr("textLength", d=>{return w>d.dx?d.dx:null})
+    //             .attr("lengthAdjust", d=>{return w>d.dx?"spacingAndGlyphs":"spacing"})
+    //             ;
+    //     });
 
     return svg.node();
 

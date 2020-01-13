@@ -111,6 +111,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
 
     <script type="text/javascript">
         // console.log('天地好在否！');
+        const tw = 64;
         d3.select("#the_submit_btn").on("click",()=>{
             l = d3.select("#the_text").node().value.split(/[\n;]+/);
             console.log(l);
@@ -121,10 +122,19 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                 try {
                     drawTree('#the_svg_wrap',treeParser(t));
                 } catch(e) {
-                    console.log(e);
+                    console.log(e);//throw(e);
                     d3.select('#the_svg_wrap').append('p').text("error");
                 }
             });
+            d3.selectAll("#the_svg_wrap svg text").nodes()
+                .forEach(e=>{
+                    let w = e.getBBox().width;
+                    console.log(w);
+                    d3.select(e)
+                        .attr("textLength", d=>{return w>tw?tw:null})
+                        .attr("lengthAdjust", d=>{return w>tw?"spacingAndGlyphs":"spacing"})
+                        ;
+                });
         });
         d3.select("#the_cleaning_btn").on("click",()=>{
             d3.selectAll('#the_svg_wrap *').remove();
