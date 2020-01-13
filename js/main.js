@@ -116,9 +116,10 @@ function createTree(data) {
             // .attr("d", d3.linkHorizontal()
             //     .x(d => d.y)
             //     .y(d => d.x))
-            .attr("d", d3.linkVertical()
-                .x(d => d.x)
-                .y(d => d.y))
+            // .attr("d", d3.linkVertical()
+            //     .x(d => d.x)
+            //     .y(d => d.y))
+            .attr("d", d=>`M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`)
         ;
 
     const node = g.append("g")
