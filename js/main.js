@@ -7,6 +7,7 @@ function treeParser(t) {
 
     t = `${t.trim().replace(/([\n\r\s\t]+)/g,' ')}`;
     let t_0 = `${t.replace(/([\{\(])/g,'[').replace(/([\}\)])/g,']').replace(/([\:])/g,'_')}`;
+    t_0 = `${t_0.trim().replace(/^\[(.+)\]$/,'$1')}`;
     let t_1 = t_0.replace(/\[/g,":[");
     console.log(t_1);
     let t_2 = `${t_1.replace(/([^\[\]:\n\s\t,]+)/g,'"$1"')}`;
