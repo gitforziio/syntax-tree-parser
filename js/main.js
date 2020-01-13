@@ -6,12 +6,20 @@ function treeParser(t) {
     //{"name":"S","children":[  ]}
 
     t = `${t.trim().replace(/([\n\r\s\t]+)/g,' ')}`;
+
     let t_0 = `${t.replace(/([\{\(])/g,'[').replace(/([\}\)])/g,']').replace(/([\:])/g,'_')}`;
     t_0 = `${t_0.trim().replace(/^\[(.+)\]$/,'$1')}`;
+
     let t_1 = t_0.replace(/\[/g,":[");
     console.log(t_1);
+
     let t_2 = `${t_1.replace(/([^\[\]:\n\s\t,]+)/g,'"$1"')}`;
+    let l_a = t_2.match(/\[/g), n_a = !l_a ? 0 : l_a.length;
+    let l_b = t_2.match(/\]/g), n_b = !l_b ? 0 : l_b.length;
+    let n_x = n_a-n_b;
+    if (n_x>0) {t_2+=(']'.repeat(n_x));};
     console.log(t_2);
+
     let t_p = `${t_2.replace(/("[^":]+"):/g,'{$1:').replace(/(\])/g,'$1}')}`;
     console.log(t_p);
 
