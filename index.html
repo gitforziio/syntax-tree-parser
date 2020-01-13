@@ -76,6 +76,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                         </div>
                     </div>
                     <button type="button" name="the_submit_btn" id="the_submit_btn" class="btn btn-primary">画出来！</button>
+                    <button type="button" name="the_cleaning_btn" id="the_cleaning_btn" class="btn btn-info">清空</button>
                 </form>
             </div>
         </div>
@@ -119,6 +120,9 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                 }
             });
         });
+        d3.select("#the_cleaning_btn").on("click",()=>{
+            d3.selectAll('#the_svg_wrap *').remove();
+        })
     </script>
 
 </body>
