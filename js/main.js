@@ -107,8 +107,8 @@ function createTree(data) {
 
     const link = g.append("g")
         .attr("fill", "none")
-        .attr("stroke", "#555")
-        .attr("stroke-opacity", 0.4)
+        .attr("stroke", "#666")
+        .attr("stroke-opacity", 0.25)
         .attr("stroke-width", 1.5)
     .selectAll("path")
         .data(root.links())
@@ -133,13 +133,14 @@ function createTree(data) {
         ;
 
     node.append("circle")
-        .attr("fill", d => d.children ? "#555" : "#999")
+        .attr("fill", d => d.children ? "#666" : "#999")
+        .attr("fill-opacity", 0.25)
         .attr("r", 2.5)
         ;
 
     node.append("text")
         // .attr("dy", "0.31em")
-        .attr("dy", d => d.children ? "-0.6em" : "1.2em")
+        .attr("dy", d => d.children ? "0.2em" : "1.2em")
         // .attr("x", d => d.children ? -6 : 6)
         .attr("text-anchor", "middle")
         // .attr("text-anchor", d => d.children ? "end" : "start")
