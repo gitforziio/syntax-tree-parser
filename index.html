@@ -235,15 +235,20 @@ S -> N;
     <script src="https://cdn.bootcss.com/d3/5.12.0/d3.min.js"></script>
 
     <script type="text/javascript" src="js/cfgParser.js"></script>
+    <script type="text/javascript" src="js/genNum.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
     <script type="text/javascript">
         d3.select("#the_cfg_submit_btn").on("click",()=>{
             let v = d3.select("#the_rules").node().value;
             let rs = rules(v);
-            rs.forEach((r,i)=>{
-                let p = rulePrinter(r)
-                d3.select('#the_cfg_svg_wrap').append('p').text(`【${i+1}】【${p}】`);
+            let i = 0;
+            rs.forEach((r)=>{
+                if (! r.only_note){
+                    let p = rulePrinter(r);
+                    i += 1;
+                    d3.select('#the_cfg_svg_wrap').append('p').text(`【${i}】【${p}】`);
+                }
                 // try {
                 //     drawTree('#the_svg_wrap',treeParser(t));
                 // } catch(e) {
