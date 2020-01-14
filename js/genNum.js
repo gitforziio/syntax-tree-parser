@@ -190,7 +190,7 @@ function transBox(box) {
 
 
 function transBigWei(t) {
-    var method = arguments[1] ? arguments[1] : 'wanyiiyii';
+    var method = arguments[1] ? arguments[1] : 'wanyiiyii_plus';
 
     if (method=='fo') {
         var bigweis = ['', '万', '亿', '兆', '京', '垓', '秭', '穰', '沟', '涧', '正', '载', '极', '恒河沙', '阿僧祗', '那由他', '不可思议', '无量', '大数'];
@@ -211,31 +211,89 @@ function transBigWei(t) {
         t = t.replace(/【【2】】/,'亿');
         t = t.replace(/【【\d+】】/g,'万');
         t = t.replace(/亿零万/g,'亿零');
+        t = t.replace(/(零+)/g,"零");
         t = t.replace(/万零万/g,'万万');
+        t = t.replace(/(零+)/g,"零");
+        t = t.replace(/万零亿/g,'万亿');
         t = t.replace(/(零+)/g,"零");
         // t = t.replace(/万万/g,'亿');
         // t = t.replace(/零亿/g,'零');
         t = t.replace(/(.)零$/,"$1");
     } else
-    if (method=='wanyiiyii') {
+    if (method=='wanyiiyii'||method=='wanyiiyii_plus') {//根据大位连贯性决定说不说零：二十亿六千万
         t = t.replace(/【【0】】/,'');
         // console.log(t);
-        var n = t.match(/【【\d+】】/g).length;
-        // console.log(n);
-        if (n>0) {
-            for (i=1;i<=n;i++) {
-                t = (i%2==1)?(t.replace(`【【${i}】】`,'万')):(t.replace(`【【${i}】】`,'亿'));
+        var ma = t.match(/【【\d+】】/g);
+        if (ma) {
+            var n = ma.length;
+            // console.log(n);
+            if (n>0) {
+                for (i=1;i<=n;i++) {
+                    t = (i%2==1)?(t.replace(`【【${i}】】`,'万')):(t.replace(`【【${i}】】`,'亿'));
+                }
+                t = t.replace(/亿零万/g,'亿零');
+                t = t.replace(/(零+)/g,"零");
+                t = t.replace(/零亿/g,'亿');
+                t = t.replace(/(零+)/g,"零");
+                t = t.replace(/(.)零$/,"$1");
+                if (method=='wanyiiyii_plus') {//位间有零必说零：二十亿零六千万
+                    t = t.replace(/(十|百|千)亿(.)千/g,'$1亿零$2千');
+                }
             }
-            t = t.replace(/亿零万/g,'亿零');
-            t = t.replace(/(零+)/g,"零");
-            t = t.replace(/零亿/g,'亿');
-            t = t.replace(/(零+)/g,"零");
-            t = t.replace(/(.)零$/,"$1");
         }
     }
 
 
-    t = t.replace(/([亿万]+)/g,"【$1】");
+
+    if (method=='fo') {
+        var bigweis = ['万', '亿', '兆', '京', '垓', '秭', '穰', '沟', '涧', '正', '载', '极', '恒河沙', '阿僧祗', '那由他', '不可思议', '无量', '大数'];
+        for (let i in bigweis) {
+            let reg = new RegExp(`(${bigweis[i]})`,"g");
+            t = t.replace(reg,'【$1】');
+        }
+    } else {
+        t = t.replace(/([亿万]+零?)/g,"【$1】");
+    }
+
+
+    // if (method=='wanwanwan') {
+    //     var ma = t.match(/万/g);
+    //     if (ma) {
+    //         var n = ma.length;
+    //         // console.log(n);
+    //         if (n>0) {
+    //             for (i=1;i<=n;i++){
+    //                 t = t.replace(/^(.+)万([^\}])/g,'{$1万}$2');
+    //             }
+    //         }
+    //     }
+    // // } else
+    // // if (method=='wanwanyii') {
+    // //     var ma = t.match(/[万亿][^】]/g);
+    // //     if (ma) {
+    // //         var n = ma.length;
+    // //         console.log(n);
+    // //         if (n>0) {
+    // //             for (i=1;i<=n;i++){
+    // //                 t = t.replace(/^(.+)([万亿])([^】])/g,'【$1$2】$3');
+    // //             }
+    // //         }
+    // //     }
+    // } else
+    // if (method=='wanyiiyii'||method=='wanyiiyii_plus') {
+    //     var ma = t.match(/亿/g);
+    //     if (ma) {
+    //         var n = ma.length;
+    //         // console.log(n);
+    //         if (n>0) {
+    //             for (i=1;i<=n;i++){
+    //                 t = t.replace(/^(.+)亿([^\}])/g,'{($1)亿}$2');
+    //             }
+    //         }
+    //     }
+    // }
+
+
     return t;
 }
 
@@ -247,15 +305,44 @@ function transBigWei(t) {
 //   console.log(x);
 // })
 
-for (let i = 1; i <= 20; i++) {
-    let n = Math.floor(Math.random()*22)+19;
-    let x = transBox(splitNumStr(smart_0_Num_grid(n)));
+for (let i = 1; i <= 30; i++) {
+    let n = Math.floor(Math.random()*45)+1;
+    let c = smart_0_Num_grid(n)
+    let x = transBox(splitNumStr(c));
+    console.log(c);
     console.log(x);
 }
 
 
+let c = "85050090000800700500000000330080600800";
+let x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
 
+c = "30000600050000000800000040000060000";
+x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
 
+c = "50000000000000090";
+x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
+
+c = "7000506000002400000000000005200040030";
+x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
+
+c = "260000040007072";
+x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
+
+c = "700050007405000800200007390039000";
+x = transBox(splitNumStr(c));
+console.log(c);
+console.log(x);
 
 
 
