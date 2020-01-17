@@ -237,8 +237,8 @@ function transBigWei(t) {
                 t = t.replace(/(零+)/g,"零");
                 t = t.replace(/(.)零$/,"$1");
                 if (method=='wanyiiyii_plus') {//位间有零必说零：二十亿零六千万
-                    t = t.replace(/(十|百|千)亿(一|二|两|三|四|五|六|七|八|九)千/g,'$1亿零$2千');
-                    t = t.replace(/(十|百|千)万(一|二|两|三|四|五|六|七|八|九)千/g,'$1万零$2千');
+                    t = t.replace(/(十|百|千|万|亿)亿(一|二|两|三|四|五|六|七|八|九)千/g,'$1亿零$2千');
+                    t = t.replace(/(十|百|千|万|亿)万(一|二|两|三|四|五|六|七|八|九)千/g,'$1万零$2千');
                 }
             }
         }
@@ -307,13 +307,19 @@ function transBigWei(t) {
 //   console.log(x);
 // })
 
-// for (let i = 1; i <= 30; i++) {
-//     let n = Math.floor(Math.random()*45)+1;
-//     let c = smart_0_Num_grid(n)
-//     let x = transBox(splitNumStr(c));
-//     console.log(c);
-//     console.log(x);
-// }
+// gr=gen_Nums_grid(10,10);
+// gr.forEach(g=>{
+//   x = transBox(splitNumStr(g));
+//   console.log(x);
+// })
+
+for (let i = 1; i <= 200; i++) {
+    let n = Math.floor(Math.random()*45)+10;
+    let c = smart_0_Num_grid(n)
+    let x = transBox(splitNumStr(c));
+    // console.log(c);
+    console.log(x);
+}
 
 
 // let c = "85050090000800700500000000330080600800";
@@ -348,12 +354,6 @@ function transBigWei(t) {
 
 
 
-
-gr=gen_Nums_grid(10,10);
-gr.forEach(g=>{
-  x = transBox(splitNumStr(g));
-  console.log(x);
-})
 
 
 

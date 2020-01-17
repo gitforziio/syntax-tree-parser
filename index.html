@@ -54,7 +54,7 @@
 
 
     <div class="container my-5 py-5 main" id="the_box">
-        <div class="row"><div class="col-12"><h4>填写</h4></div></div>
+        <div class="row"><div class="col-12"><h4>填写区</h4></div></div>
         <div class="row">
             <div class="col">
                 <form name="the_form" class="container">
@@ -82,12 +82,12 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
                         </div>
                     </div>
                     <button type="button" name="the_submit_btn" id="the_submit_btn" class="btn btn-primary">画出来！</button>
-                    <button type="button" name="the_cleaning_btn" id="the_cleaning_btn" class="btn btn-info">清空</button>
+                    <button type="button" name="the_cleaning_btn" id="the_cleaning_btn" class="btn btn-danger">清空输出区</button>
                 </form>
             </div>
         </div>
         <hr />
-        <div class="row mt-5 mb-3"><div class="col"><h4>出图</h4></div></div>
+        <div class="row mt-5 mb-3"><div class="col"><h4>输出区</h4></div></div>
         <div class="row">
             <div class="col-12">
                 <div id="the_svg_wrap"></div>
@@ -98,7 +98,7 @@ np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
 
 
     <div class="container my-5 py-5 main" id="the_cfg_box">
-        <div class="row"><div class="col-12"><h4>填写</h4></div></div>
+        <div class="row"><div class="col-12"><h4>填写区</h4></div></div>
         <div class="row">
             <div class="col">
                 <form name="the_cfg_form" class="container">
@@ -207,13 +207,14 @@ S -> N;
 </textarea>
                         </div>
                     </div>
-                    <button type="button" name="the_cfg_submit_btn" id="the_cfg_submit_btn" class="btn btn-primary">画出来！</button>
-                    <button type="button" name="the_cfg_cleaning_btn" id="the_cfg_cleaning_btn" class="btn btn-info">清空</button>
+                    <button type="button" name="the_cfg_analyse_btn" id="the_cfg_analyse_btn" class="btn btn-info">分析规则概况</button>
+                    <button type="button" name="the_cfg_submit_btn" id="the_cfg_submit_btn" class="btn btn-primary">画出来！（暂不可用）</button>
+                    <button type="button" name="the_cfg_cleaning_btn" id="the_cfg_cleaning_btn" class="btn btn-danger">清空输出区</button>
                 </form>
             </div>
         </div>
         <hr />
-        <div class="row mt-5 mb-3"><div class="col"><h4>出图</h4></div></div>
+        <div class="row mt-5 mb-3"><div class="col"><h4>输出区</h4></div></div>
         <div class="row">
             <div class="col-12">
                 <div id="the_cfg_svg_wrap"></div>
@@ -236,9 +237,27 @@ S -> N;
 
     <script type="text/javascript" src="js/cfgParser.js"></script>
     <script type="text/javascript" src="js/genNum.js"></script>
+    <script type="text/javascript" src="js/analyse.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
     <script type="text/javascript">
+        d3.select("#the_cfg_analyse_btn").on("click",()=>{
+            let v = d3.select("#the_rules").node().value.split(/[\n]+/);
+            let a = readRules(v);
+            console.log(a);
+            let b = AnalyseRules(a);
+            console.log(b);
+            let c = GetNonTerEnv(b);
+            // console.log(c);
+            let d = SortNonTer(c);
+            // console.log(d);
+            // let e = IfEnvSame(b);
+            // console.log(e);
+            let tr = GetTerminator(b);
+            let nt = GetNonTerminator(b);
+            d3.select('#the_cfg_svg_wrap').append('textarea').attr('id','cfg_info').attr('class','form-control').attr('rows','6');
+            d3.select('#cfg_info').text(`${a[a.length-1].trim()}；\n共 ${tr.length} 个终结符，分别是： \`${tr.join("\` 、 \`")}\` ；\n共 ${nt.length} 个非终结符，分别是： \`${nt.join("\` 、 \`")}\` 。`);
+        })
         d3.select("#the_cfg_submit_btn").on("click",()=>{
             let v = d3.select("#the_rules").node().value;
             let rs = rules(v);
@@ -275,13 +294,13 @@ S -> N;
                     drawTree('#the_svg_wrap',treeParser(t));
                 } catch(e) {
                     console.log(e);//throw(e);
-                    d3.select('#the_svg_wrap').append('p').text("error");
+                    d3.select('#the_svg_wrap').append('p').text("解析出错，无法绘制！");
                 }
             });
             d3.selectAll("#the_svg_wrap svg text").nodes()
                 .forEach(e=>{
                     let w = e.getBBox().width;// 【Firefox SVG getBBox方法返回'NS_ERROR_FAILURE'错误分析】 https://www.cnblogs.com/jaxu/p/4193456.html
-                    console.log(w);
+                    // console.log(w);
                     d3.select(e)
                         .attr("textLength", d=>{return w>tw?tw:null})
                         .attr("lengthAdjust", d=>{return w>tw?"spacingAndGlyphs":"spacing"})

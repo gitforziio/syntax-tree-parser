@@ -15,6 +15,7 @@ function treeFormater(t) {
     console.log(t_1);
 
     let t_2 = `${t_1.replace(/([^\[\]:\n\s\t,]+)/g,'"$1"')}`;
+    t_2 = `${t_2.replace(/(\]+$)/,']')}`;
     let l_a = t_2.match(/\[/g), n_a = !l_a ? 0 : l_a.length;
     let l_b = t_2.match(/\]/g), n_b = !l_b ? 0 : l_b.length;
     let n_x = n_a-n_b;
