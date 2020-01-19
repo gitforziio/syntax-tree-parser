@@ -255,8 +255,15 @@ S -> N;
             // console.log(e);
             let tr = GetTerminator(b);
             let nt = GetNonTerminator(b);
+            let sm = IfEnvSame(b);
+            let dst = PrintNonTerEnvToTxt(c);
+            let dst_tb = PrintNonTerEnvToTable(c);
             d3.select('#the_cfg_svg_wrap').append('textarea').attr('id','cfg_info').attr('class','form-control').attr('rows','6');
-            d3.select('#cfg_info').text(`${a[a.length-1].trim()}；\n共 ${tr.length} 个终结符，分别是： \`${tr.join("\` 、 \`")}\` ；\n共 ${nt.length} 个非终结符，分别是： \`${nt.join("\` 、 \`")}\` 。`);
+            d3.select('#cfg_info').text(`${a[a.length-1].trim()}；\n共 ${tr.length} 个终结符，分别是： \`${tr.join("\` 、 \`")}\` ；\n共 ${nt.length} 个非终结符，分别是： \`${nt.join("\` 、 \`")}\` 。\n\n${sm}`);
+            d3.select('#the_cfg_svg_wrap').append('textarea').attr('id','cfg_dist').attr('class','form-control').attr('rows','6');
+            d3.select('#cfg_dist').text(`${dst}`);
+            d3.select('#the_cfg_svg_wrap').append('div').attr('id','cfg_dist_table_wrap');
+            d3.select('#cfg_dist_table_wrap').html(`${dst_tb}`);
         })
         d3.select("#the_cfg_submit_btn").on("click",()=>{
             let v = d3.select("#the_rules").node().value;

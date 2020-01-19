@@ -198,83 +198,152 @@ function SortNonTer(nt_env){
 
 
 
-// def IfEnvSame(all_env):
-//     // 查找是否存在两个非终结符的分布环境一样
-//     // 参　数： all_env 存储所有规则符号分布环境的词典
-//     // 返回值： NULL
-//     dir = {}
-//     result = ""
-//     for t in GetNonTerminator(all_env):
-//         i = 1
-//         while i < len(all_env[t]):
-//             a = all_env[t][i][0:-1]
-//             if not a in dir:
-//                 dir[a] = [t]
-//             else:
-//                 if not t in dir[a]:
-//                     dir[a].append(t)
-//             i = i + 1
-//     for t in dir.keys():
-//         if len(dir[t]) > 1:
-//             i = 0
-//             nt = ""
-//             while i < len(dir[t]):
-//                 nt = nt + dir[t][i] + " "
-//                 i = i + 1
-//             result = result + "非终结符" + nt + "存在相同的分布环境：" + t[0] + " -> " + t[1] + " * " + t[2] + "\n\n"
-//     if len(result) == 0:
-//         print "规则中不存在分布环境相同的非终结符"
-//     else:
-//         out_file_name = "SameEnv_" + lines_name
-//         out_file = open(out_file_name,"w")
-//         sorted_result = []
-//         sorted_result = result.split("\n\n")
-//         sorted_result.sort()
-//         i = 0
-//         while i < len(sorted_result): 
-//             out_file.write(sorted_result[i])
-//             out_file.write("\n")
-//             i = i + 1
-//         out_file.close()
-//         print "规则中存在分布环境相同的非终结符,详细分析结果已打印到结果文件" + out_file_name
+function IfEnvSame(all_env){
+    // 查找是否存在两个非终结符的分布环境一样
+    // 参　数： all_env 存储所有规则符号分布环境的词典
+    // 返回值： 结果文本// NULL
+
+    let dir = {};
+    let result = "";
+
+    GetNonTerminator(all_env).forEach(t=>{
+        let i = 1;
+        while (i < all_env[t].length) {
+            let a = all_env[t][i].slice(0,-1);
+            if (Object.keys(dir).indexOf(a)==-1){
+                dir[a] = [t];
+            } else {
+                if (dir[a].indexOf(t)==-1) {
+                    dir[a].push(t);
+                }
+            }
+            i += 1;
+        }
+    });
+
+    Object.keys(dir).forEach(t=>{
+        if (dir[t].length > 1) {
+            let i = 0;
+            let nt = "";
+            while (i < dir[t].length) {
+                nt = nt + dir[t][i] + " ";
+                i += 1;
+            }
+            result = result + "非终结符" + nt + "存在相同的分布环境：" + t[0] + " -> " + t[1] + " * " + t[2] + "\n\n";
+        }
+    });
+
+    if (result.length == 0) {
+        result = "规则中不存在分布环境相同的非终结符。";
+        // console.log("规则中不存在分布环境相同的非终结符");
+    } else {
+        let sorted_result = result.split("\n\n");
+        sorted_result.sort();
+        result = sorted_result.join("\n");
+        // out_file_name = "SameEnv_" + lines_name
+        // out_file = open(out_file_name,"w")
+        // sorted_result = []
+        // sorted_result = result.split("\n\n")
+        // sorted_result.sort()
+        // i = 0
+        // while i < len(sorted_result): 
+        //     out_file.write(sorted_result[i])
+        //     out_file.write("\n")
+        //     i = i + 1
+        // out_file.close()
+        // console.log("规则中存在分布环境相同的非终结符,详细分析结果已打印到结果文件" + out_file_name);
+    }
+
+    return result;
+}
 
 
 
+function PrintNonTerEnvToTxt(nt_env){
+    // 打印非终结符分布环境到txt
+    // 参　数： nt_env 特定非终结符分布词典
+    // 返回值： 结果文本// NULL
 
-// def PrintNonTerEnvToTxt(nt_env):
-//     #打印非终结符分布环境到txt
-//     #参数：nt_env 特定非终结符分布词典
-//     #返回值：NULL
-//     if len(nt_env.keys()) == 0:
-//         return
+    if (Object.keys(nt_env).length == 0) {
+        return "未发现非终结符，无法分析分布环境。";
+    }
+
+    var titles = "非终结符,分布次数,父节点,左邻节点,右邻节点,出现行号\n";
+
+    let output = titles;
+
+    let nt_count = CountNonTer(nt_env);
+    SortNonTer(nt_env).forEach(t=>{
+        let j = 1;
+        let a = nt_env[t];
+        while (j < a.length) {
+            output += `${t},${nt_count[t]},${a[j][0]},${a[j][1]},${a[j][2]},${a[j][3]}\n`;
+            j += 1;
+        }
+    });
+
+    // width = -20
+    // width_choice = raw_input("是否改变存放分布环境表格的列宽？1、是 2、否(当前列宽为20字符，左对齐)\n")
+    // if int(width_choice) == 1:
+    //     width = int(raw_input("请输入新的表格列宽(负数为左对齐，正数为右对齐)\n"))
+
+    // out_file_name = "nt_env_" + lines_name
+    // out_file = open(out_file_name, "w")
+
+    // // 打印表头
+    // output = "%*s%*s%*s%*s%*s%*s\n"%(width, "非终结符", width, "分布次数", width, "父节点", width, "左邻节点", width, "右邻节点", width, "出现行号") + "\n"
+
+    // // 打印内容
+    // nt_count = CountNonTer(nt_env)
+    // for t in SortNonTer(nt_env):
+    //     j = 1
+    //     a = nt_env[t]
+    //     while j < len(a):
+    //         output = output + "%*s%*s%*s%*s%*s%*s\n"%(width, t ,width, nt_count[t], width, str(a[j][0]), width, str(a[j][1]), width, str(a[j][2]), width, str(a[j][3]))
+    //         j = j + 1
+    // out_file.write(output)
     
-//     width = -20
-//     width_choice = raw_input("是否改变存放分布环境表格的列宽？1、是 2、否(当前列宽为20字符，左对齐)\n")
-//     if int(width_choice) == 1:
-//         width = int(raw_input("请输入新的表格列宽(负数为左对齐，正数为右对齐)\n"))
-
-//     out_file_name = "nt_env_" + lines_name
-//     out_file = open(out_file_name, "w")
-
-//     #打印表头
-//     output = "%*s%*s%*s%*s%*s%*s\n"%(width, "非终结符", width, "分布次数", width, "父节点", width, "左邻节点", width, "右邻节点", width, "出现行号") + "\n"
-
-//     #打印内容
-//     nt_count = CountNonTer(nt_env)
-//     for t in SortNonTer(nt_env):
-//         j = 1
-//         a = nt_env[t]
-//         while j < len(a):
-//             output = output + "%*s%*s%*s%*s%*s%*s\n"%(width, t ,width, nt_count[t], width, str(a[j][0]), width, str(a[j][1]), width, str(a[j][2]), width, str(a[j][3]))
-//             j = j + 1
-//     out_file.write(output)
+    // out_file.close() 
     
-//     out_file.close() 
-    
-//     print "您所查询的非终结符的分布环境已打印到结果文件 " + out_file_name + "\n"
+    // print "您所查询的非终结符的分布环境已打印到结果文件 " + out_file_name + "\n"
+
+    return output;
+}
 
 
 
+function PrintNonTerEnvToTable(nt_env){
+    // 打印非终结符分布环境到html表格
+    // 参　数： nt_env 特定非终结符分布词典
+    // 返回值： 结果表格html
+
+    if (Object.keys(nt_env).length == 0) {
+        return "未发现非终结符，无法分析分布环境。";
+    }
+
+    var tablestart = '<table class="table table-bordered">';
+    var tbodystart = '<tbody>';
+    var tbodyend = '</tbody>';
+    var tableend = '</table>';
+
+    var titles = '<thead><tr><th scope="col">非终结符</th><th scope="col">分布次数</th><th scope="col">父节点</th><th scope="col">左邻节点</th><th scope="col">右邻节点</th><th scope="col">出现行号</th></tr></thead>';
+
+    let output = tablestart+titles+tbodystart;
+
+    let nt_count = CountNonTer(nt_env);
+    SortNonTer(nt_env).forEach(t=>{
+        let j = 1;
+        let a = nt_env[t];
+        while (j < a.length) {
+            output += `<tr><td>${t}</td><td>${nt_count[t]}</td><td>${a[j][0]}</td><td>${a[j][1]}</td><td>${a[j][2]}</td><td>${a[j][3]}</td></tr>`;
+            j += 1;
+        }
+    });
+
+    output += tbodyend+tableend;
+
+    return output;
+}
 
 
 
@@ -285,32 +354,32 @@ function SortNonTer(nt_env){
 
 
 // if __name__ == '__main__':
-//     in_file = fun.ReadFile()         #打开规则文件
+//     in_file = fun.ReadFile()         // 打开规则文件
     
-//     output = "#CFG文法规则分析报告——Overview\n"
-//     output = output + "#Rules Filename:" + fun.in_file_name + "\n"
-//     output = output + "#Created Time:" + time.strftime('%Y-%m-%d', time.gmtime()) + "\n\n"
+//     output = "// CFG文法规则分析报告——Overview\n"
+//     output = output + "// Rules Filename:" + fun.in_file_name + "\n"
+//     output = output + "// Created Time:" + time.strftime('%Y-%m-%d', time.gmtime()) + "\n\n"
     
-//     rules = fun.ReadRules(in_file)   #读取规则，统计规则条数及判断是否有重复规则
+//     rules = fun.ReadRules(in_file)   // 读取规则，统计规则条数及判断是否有重复规则
 //     i = len(rules) - 1
 //     output = output + "您要分析的规则文件“" + fun.in_file_name + "”中" + rules[i]
     
-//     env = fun.AnalyseRules(rules) #对已读取的规则进行分析
+//     env = fun.AnalyseRules(rules) // 对已读取的规则进行分析
     
-//     ter = fun.GetTerminator(env)  #获取终结符及其个数
+//     ter = fun.GetTerminator(env)  // 获取终结符及其个数
 //     output = output + "终结符个数为：" + str(len(ter)) + ",具体如下：\n"  
 //     for t in ter:
 //         output = output + t + " || "
 //     output = output.rstrip(" || ")
         
-//     nter = fun.GetNonTerminator(env)   #获取非终结符及其个数
+//     nter = fun.GetNonTerminator(env)   // 获取非终结符及其个数
 //     output = output + "\n\n非终结符个数为：" + str(len(nter)) + ",具体如下：\n"  
 //     for t in nter:
 //         output = output + t + " || "
 //     output = output.rstrip(" || ")
 //     output = output + "\n\n"
     
-//     #将总体报告打印到结果文件中
+//     // 将总体报告打印到结果文件中
 //     out_file_name = "overview_" + fun.in_file_name
 //     out_file = open(out_file_name,"w")
 //     out_file.write(output)
