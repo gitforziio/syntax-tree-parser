@@ -335,7 +335,7 @@ function PrintNonTerEnvToTable(nt_env){
         let j = 1;
         let a = nt_env[t];
         while (j < a.length) {
-            output += `<tr><td>${t}</td><td>${nt_count[t]}</td><td>${a[j][0]}</td><td>${a[j][1]}</td><td>${a[j][2]}</td><td>${a[j][3]}</td></tr>`;
+            output += `<tr><td><code>${t}</code></td><td>${nt_count[t]}</td><td><code>${a[j][0]}</code></td><td><code>${a[j][1]}</code></td><td><code>${a[j][2]}</code></td><td>${a[j][3]}</td></tr>`;
             j += 1;
         }
     });

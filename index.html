@@ -15,31 +15,42 @@
     <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
     <style type="text/css">
         body{background: #eee;}
+        .bodywrap{min-height: 100vh;}
         .container.main{background: #fff;}
-        #the_box,#the_cfg_box{min-height: 80vh;}
+        /*#the_box,#the_cfg_box,#the_num_box{min-height: 80vh;}*/
         .span-nav-desc{font-size: 0.6em;}
         #the_rules{font-family: "SourceCodePro","Courier New","Courier","Console"}
+        #cfg_dist_table_wrap{max-height: 50vh; overflow: auto; border: 1px solid #ced4da;}
+        .hidden{display: none;}
     </style>
 
 </head>
 
 <body>
 
+<div class="bodywrap">
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#the_navbar_toggler" aria-controls="the_navbar_toggler" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="the_navbar_toggler">
-        <a class="navbar-brand" href="#">syntax-tree-parser</a>
+      <div class="collapse navbar-collapse" id="the_navbar_toggler"><!-- 
+        <a class="navbar-brand" href="#">syntax-tree-parser</a> -->
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active" id="tab-datas">
-            <a class="nav-link" href="#">立即使用<span class="span-nav-desc"> (当前为样例)</span></a>
+          <li class="nav-item active" id="tab-num">
+            <a class="nav-link" href="#">汉语数字工具</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">选项<span class="span-nav-desc"> (暂未开放)</span></a>
+          <li class="nav-item" id="tab-cfg">
+            <a class="nav-link" href="#">CFG规则分析工具</a>
+          </li>
+          <li class="nav-item" id="tab-tree">
+            <a class="nav-link" href="#">画树工具</a>
           </li>
         </ul>
         <ul class="navbar-nav mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">选项<span class="span-nav-desc"> (暂未开放)</span></a>
+          </li>
           <li class="nav-item" id="tab-about">
             <a class="nav-link" href="#">关于</a>
           </li>
@@ -53,54 +64,91 @@
 
 
 
-    <div class="container my-5 py-5 main" id="the_box">
-        <div class="row"><div class="col-12"><h4>填写区</h4></div></div>
-        <div class="row">
-            <div class="col">
-                <form name="the_form" class="container">
-                    <div class="form-group row">
-                        <label for="the_text" class="col-sm-2 col-form-label">树表达式</label>
-                        <div class="col-sm-10">
-                            <!-- <input type="text" class="form-control" name="the_text" id="the_text" value="S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]"> -->
-                            <textarea type="textarea" class="form-control" name="the_text" id="the_text" rows="3">决策树1[C有空缺[A是空缺原文[Q有选项，A是选项之一[多选式完形填空],Q为空[生成式完形填空]]],C无空缺[Q有空缺，A是空缺原文。[Q有选项，A是选项之一[多选式完形填空],Q无选项[生成式完形填空]],Q有选项，A是选项之一[多选],Q仅题干[Q独立[A为C的片段[片段抽取],A自由[自由作答/生成式]],Q在序列中，X提供对话历史[A为C的片段[对话式片段抽取],A自由[对话式自由作答/对话+生成式]]]]]
-决策树2：得A需要[仅查C中一串[未分类],查C中多处[C是单文档[未分类],C是多文档集合[多文档/多跳式]],C和X中的K[基于知识,K是文本型[基于知识],K是程序操作[离散推理]]]
-决策树3[X为空[未分类],X提供外部知识K[基于知识,K是文本型[基于知识],K是程序操作[离散推理]],X提供对话历史H[对话式],X提供K和H[基于知识对话式]]
-决策树4：响应R[仅可能是A[未分类],A或无法回答[含有无法回答的问题]]
-决策树5[C是单文档[未分类],C是多文档集合[多文档/多跳式]]
-dj:主谓{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
-{dj:主谓{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }}
-[np:定中{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }]
-(np:联合{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  });
-vp:状中{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  
-[vp:述宾{  vp:状中[  np:单词(n) , vp:单词(v)  ] , np:单词(n)  }
-dj:存在{  np:单词(n) , vp:单词(v) , np:单词(n)  };np:粘合定中{  vp:状中[  np:单词(n) , vp:单词(v)  ] , n  }
-dj:主谓{  np:粘合定中[  n , v  ] ,,, np:单词(n)  }
-np:定中{  np:粘合定中[  n , v  ] , np:单词(n)  }]]]]]
-
-
-np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
+    <div class="container my-5 py-5 main" id="the_num_box">
+        <div class="row"><div class="col-12"><h2>汉语数字工具</h2></div></div><!-- 
+        <div class="row"><div class="col-12"><p>功能设定：阿拉伯数字转汉字；指定位数生成全部零槽形式；指定位数范围生成汉语自然数</p></div></div> -->
+        <div class="row my-3"><div class="col-12">
+            <form name="the_num_form" class="container">
+                <h4 class="mt-4 mb-3">基本选项</h4>
+                <div class="row"><div class="col-12">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="the_num_method1" name="the_num_method" class="custom-control-input">
+                        <label class="custom-control-label" for="the_num_method1"><strong>序列系位表达法</strong>：万万为亿，万亿为兆，万兆为京，万京为垓，万垓为……<small>（注：数字太大时存在BUG）</small></label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="the_num_method2" name="the_num_method" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="the_num_method2"><strong>最高到亿位的“万亿”表达法</strong>：数的最高位限制在亿位，亿级别的数自身也可以做亿位的系数。</label>
+                    </div>
+                </div></div>
+                <h4 class="mt-4 mb-3">阿拉伯数字转汉字</h4>
+                <div class="row"><div class="col-12"><p>注意：目前仅支持正整数。</p></div></div>
+                <div class="row"><div class="col-12">
+                    <div class="form-inline">
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_input" placeholder="输入阿拉伯数字" min="1">
+                        </div>
+                        <button type="button" class="btn btn-primary mr-3 mb-2" name="the_num_2_cn_btn" id="the_num_2_cn_btn">转换</button>
+                        <div class="form-group mb-2">
+                            <input type="text" readonly class="form-control" id="the_num_cn" placeholder="输出中文数字">
                         </div>
                     </div>
-                    <button type="button" name="the_submit_btn" id="the_submit_btn" class="btn btn-primary">画出来！</button>
-                    <button type="button" name="the_cleaning_btn" id="the_cleaning_btn" class="btn btn-danger">清空输出区</button>
-                </form>
-            </div>
-        </div>
+                </div></div>
+                <h4 class="mt-4 mb-3">指定位数数字全部零槽形式随机汉语自然数</h4>
+                <div class="row"><div class="col-12"><p id="the_num_genner_info">注意：位数超过10位时，输出内容过多，容易<strong>导致页面无响应或内存溢出！</strong></p></div></div>
+                <div class="row"><div class="col-12">
+                    <div class="form-inline">
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_genner_start" placeholder="设置开始位数" min="1" max="36">
+                        </div>
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_genner_end" placeholder="设置结束位数" min="1" max="36">
+                        </div>
+                        <button type="button" class="btn btn-primary mb-2" name="the_num_genner_btn" id="the_num_genner_btn">生成！</button>
+                    </div>
+                </div></div>
+                <h4 class="mt-4 mb-3">指定位数范围的随机汉语自然数</h4>
+                <div class="row"><div class="col-12"><p id="the_num_genner_info">注意：生成例数填写过大时，容易<strong>导致页面无响应或内存溢出！</strong></p></div></div>
+                <div class="row"><div class="col-12">
+                    <div class="form-inline">
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_random_start" placeholder="设置开始位数" min="1">
+                        </div>
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_random_end" placeholder="设置结束位数" min="1">
+                        </div>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group mr-3 mb-2">
+                            <input type="number" class="form-control" id="the_num_random_size" placeholder="设置生成例数" min="1">
+                        </div>
+                        <button type="button" class="btn btn-primary mb-2" name="the_num_random_btn" id="the_num_random_btn">生成！</button>
+                    </div>
+                </div></div>
+            </form>
+        </div></div>
         <hr />
-        <div class="row mt-5 mb-3"><div class="col"><h4>输出区</h4></div></div>
-        <div class="row">
-            <div class="col-12">
-                <div id="the_svg_wrap"></div>
+        <div class="row mt-5 mb-3"><div class="col-12"><h4>输出区</h4></div></div>
+        <div class="row"><div class="col-12">
+            <div class="container">
+                <div class="row"><div class="col-12">
+                    <button type="button" name="the_num_cleaning_btn" id="the_num_cleaning_btn" class="btn btn-danger">清空输出区</button>
+                </div></div>
             </div>
-        </div>
+        </div></div>
+        <div class="row"><div class="col-12">
+            <div class="container">
+                <div id="the_num_svg_wrap" class="my-3"></div>
+            </div>
+        </div></div>
     </div>
 
 
 
-    <div class="container my-5 py-5 main" id="the_cfg_box">
+    <div class="container my-5 py-5 main hidden" id="the_cfg_box">
+        <div class="row"><div class="col-12"><h2 class="mb-4">CFG规则分析工具</h2></div></div>
         <div class="row"><div class="col-12"><h4>填写区</h4></div></div>
         <div class="row">
-            <div class="col">
+            <div class="col-12">
                 <form name="the_cfg_form" class="container">
                     <div class="form-group row">
                         <label for="the_rules" class="col-sm-2 col-form-label">规则集</label>
@@ -133,7 +181,7 @@ S -> N;
 
 </textarea>
                         </div>
-                    </div>
+                    </div><!-- 
                     <div class="form-group row">
                         <label for="the_tests" class="col-sm-2 col-form-label">句子集</label>
                         <div class="col-sm-10">
@@ -206,15 +254,15 @@ S -> N;
 二 千 三 百 五 十 万 三 千 零 一 万
 </textarea>
                         </div>
-                    </div>
-                    <button type="button" name="the_cfg_analyse_btn" id="the_cfg_analyse_btn" class="btn btn-info">分析规则概况</button>
-                    <button type="button" name="the_cfg_submit_btn" id="the_cfg_submit_btn" class="btn btn-primary">画出来！（暂不可用）</button>
+                    </div> -->
+                    <button type="button" name="the_cfg_analyse_btn" id="the_cfg_analyse_btn" class="btn btn-info">分析规则概况</button><!-- 
+                    <button type="button" name="the_cfg_submit_btn" id="the_cfg_submit_btn" class="btn btn-primary">画出来！（暂不可用）</button> -->
                     <button type="button" name="the_cfg_cleaning_btn" id="the_cfg_cleaning_btn" class="btn btn-danger">清空输出区</button>
                 </form>
             </div>
         </div>
         <hr />
-        <div class="row mt-5 mb-3"><div class="col"><h4>输出区</h4></div></div>
+        <div class="row mt-5 mb-3"><div class="col-12"><h4>输出区</h4></div></div>
         <div class="row">
             <div class="col-12">
                 <div id="the_cfg_svg_wrap"></div>
@@ -223,6 +271,51 @@ S -> N;
     </div>
 
 
+
+    <div class="container my-5 py-5 main hidden" id="the_box">
+        <div class="row"><div class="col-12"><h2 class="mb-4">画树工具</h2></div></div>
+        <div class="row"><div class="col-12"><h4>填写区</h4></div></div>
+        <div class="row">
+            <div class="col-12">
+                <form name="the_form" class="container">
+                    <div class="form-group row">
+                        <label for="the_text" class="col-sm-2 col-form-label">树表达式</label>
+                        <div class="col-sm-10">
+                            <!-- <input type="text" class="form-control" name="the_text" id="the_text" value="S[S1_SR[1Thead_n[1T[_1[一],te[十]],_n[_u[九]]],wa[万],Rr[_u[六]]]]"> -->
+                            <textarea type="textarea" class="form-control" name="the_text" id="the_text" rows="3">决策树1[C有空缺[A是空缺原文[Q有选项，A是选项之一[多选式完形填空],Q为空[生成式完形填空]]],C无空缺[Q有空缺，A是空缺原文。[Q有选项，A是选项之一[多选式完形填空],Q无选项[生成式完形填空]],Q有选项，A是选项之一[多选],Q仅题干[Q独立[A为C的片段[片段抽取],A自由[自由作答/生成式]],Q在序列中，X提供对话历史[A为C的片段[对话式片段抽取],A自由[对话式自由作答/对话+生成式]]]]]
+决策树2：得A需要[仅查C中一串[未分类],查C中多处[C是单文档[未分类],C是多文档集合[多文档/多跳式]],C和X中的K[基于知识,K是文本型[基于知识],K是程序操作[离散推理]]]
+决策树3[X为空[未分类],X提供外部知识K[基于知识,K是文本型[基于知识],K是程序操作[离散推理]],X提供对话历史H[对话式],X提供K和H[基于知识对话式]]
+决策树4：响应R[仅可能是A[未分类],A或无法回答[含有无法回答的问题]]
+决策树5[C是单文档[未分类],C是多文档集合[多文档/多跳式]]
+dj:主谓{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  }
+{dj:主谓{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }}
+[np:定中{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  }]
+(np:联合{  np:单词(n) , np:粘合定中[  vp:单词(v) , n  ]  });
+vp:状中{  np:单词(n) , vp:述宾[  vp:单词(v) , np:单词(n)  ]  
+[vp:述宾{  vp:状中[  np:单词(n) , vp:单词(v)  ] , np:单词(n)  }
+dj:存在{  np:单词(n) , vp:单词(v) , np:单词(n)  };np:粘合定中{  vp:状中[  np:单词(n) , vp:单词(v)  ] , n  }
+dj:主谓{  np:粘合定中[  n , v  ] ,,, np:单词(n)  }
+np:定中{  np:粘合定中[  n , v  ] , np:单词(n)  }]]]]]
+
+
+np:联合{  np:粘合定中[  n , v  ] , np:单词(n)  }</textarea>
+                        </div>
+                    </div>
+                    <button type="button" name="the_submit_btn" id="the_submit_btn" class="btn btn-primary">画出来！</button>
+                    <button type="button" name="the_cleaning_btn" id="the_cleaning_btn" class="btn btn-danger">清空输出区</button>
+                </form>
+            </div>
+        </div>
+        <hr />
+        <div class="row mt-5 mb-3"><div class="col-12"><h4>输出区</h4></div></div>
+        <div class="row">
+            <div class="col-12">
+                <div id="the_svg_wrap"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
     <footer class="pt-4 pb-2 bg-dark text-white">
       <div class="container text-center">
@@ -239,6 +332,100 @@ S -> N;
     <script type="text/javascript" src="js/genNum.js"></script>
     <script type="text/javascript" src="js/analyse.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+
+    <script type="text/javascript">
+        d3.select("#tab-num").on('click',()=>{
+            d3.selectAll(".nav-item").classed("active", false);
+            d3.select("#tab-num").classed("active", true);
+            d3.selectAll(".main").classed("hidden", true);
+            d3.select("#the_num_box").classed("hidden", false);
+        })
+        d3.select("#tab-cfg").on('click',()=>{
+            d3.selectAll(".nav-item").classed("active", false);
+            d3.select("#tab-cfg").classed("active", true);
+            d3.selectAll(".main").classed("hidden", true);
+            d3.select("#the_cfg_box").classed("hidden", false);
+        })
+        d3.select("#tab-tree").on('click',()=>{
+            d3.selectAll(".nav-item").classed("active", false);
+            d3.select("#tab-tree").classed("active", true);
+            d3.selectAll(".main").classed("hidden", true);
+            d3.select("#the_box").classed("hidden", false);
+        })
+        d3.select("#tab-about").on('click',()=>{
+            d3.selectAll(".nav-item").classed("active", false);
+            d3.select("#tab-about").classed("active", true);
+            d3.selectAll(".main").classed("hidden", true);
+            d3.select("#main-about").classed("hidden", false);
+        })
+    </script>
+
+    <script type="text/javascript">
+        d3.select("#the_num_input").on("change",()=>{
+            let m = (d3.select("#the_num_method1").node().checked)?"fo":"wanyiiyii_plus";
+            let nstr = d3.select('#the_num_input').node().value;
+            let x = transBox(splitNumStr(nstr),m,false);
+            d3.select('#the_num_cn').attr("text", x).attr("value", x);
+        })
+        d3.select("#the_num_2_cn_btn").on("click",()=>{
+            let m = (d3.select("#the_num_method1").node().checked)?"fo":"wanyiiyii_plus";
+            let nstr = d3.select('#the_num_input').node().value;
+            let x = transBox(splitNumStr(nstr),m,false);
+            d3.select('#the_num_cn').attr("text", x).attr("value", x);
+        })
+
+        d3.select("#the_num_genner_btn").on("click",()=>{
+            let n1 = d3.select('#the_num_genner_start').node().value?d3.select('#the_num_genner_start').node().value:1;
+            let n2 = d3.select('#the_num_genner_end').node().value?d3.select('#the_num_genner_end').node().value:1;
+            if (n1>n2) {let nn = n1; n1 = n2; n2 = nn;};
+            let gr=gen_Nums_grid(n1,n2);
+            let t = "";
+            gr.forEach(g=>{
+                let x = transBox(splitNumStr(g));
+                t+=(x+"\n");
+            })
+            d3.select('#num_genned').remove();
+            d3.selectAll('#the_num_svg_wrap').append('textarea').attr('id','num_genned').attr('class','form-control').attr('rows','6');
+            d3.select('#num_genned').text(t);
+        })
+
+        function random(lower, upper) {
+            let x = Math.random();
+            console.log("Math.random():         x="+x);
+            let y = (upper - lower+1);
+            console.log("(upper - lower+1):     y="+y);
+            let z = Math.floor( x * y );
+            console.log("Math.floor( x * y ):   z="+z);
+            let a = parseInt(z) + parseInt(lower);
+            console.log("z + lower:             a="+a);
+            return a;
+        }
+
+        d3.select("#the_num_random_btn").on("click",()=>{
+            var n1 = d3.select('#the_num_random_start').node().value?d3.select('#the_num_random_start').node().value:1;
+            var n2 = d3.select('#the_num_random_end').node().value?d3.select('#the_num_random_end').node().value:1;
+            if (n1>n2) {let nn = n1; n1 = n2; n2 = nn;};
+            var n3 = d3.select('#the_num_random_size').node().value?d3.select('#the_num_random_size').node().value:1;
+            let t = "";
+            for (let i = 1; i <= n3; i++) {
+                var n = random(n1, n2);
+                console.log("                       n="+n);
+                let c = smart_0_Num_grid(n)
+                let x = transBox(splitNumStr(c));
+                console.log(c);
+                t+=(x+"\n");
+            }
+            d3.select('#num_randomed').remove();
+            d3.selectAll('#the_num_svg_wrap').append('textarea').attr('id','num_randomed').attr('class','form-control').attr('rows','6');
+            d3.select('#num_randomed').text(t);
+        })
+
+
+
+        d3.select("#the_num_cleaning_btn").on("click",()=>{
+            d3.selectAll('#the_num_svg_wrap *').remove();
+        })
+    </script>
 
     <script type="text/javascript">
         d3.select("#the_cfg_analyse_btn").on("click",()=>{

@@ -176,6 +176,8 @@ function transQian(nstr) {
 }
 
 function transBox(box) {
+    var method = arguments[1] ? arguments[1] : 'wanyiiyii_plus';
+    var space = !arguments[2] ? arguments[2] : true;
     let thing = [];
     let le = box.length;
     box.forEach((b,i)=>{
@@ -185,12 +187,13 @@ function transBox(box) {
     })
     let tt = thing.join('').replace(/(.)零$/,"$1");
     // return tt;
-    return transBigWei(tt);
+    return transBigWei(tt,method,space);
 }
 
 
 function transBigWei(t) {
     var method = arguments[1] ? arguments[1] : 'wanyiiyii_plus';
+    var space = !arguments[2] ? arguments[2] : true;
 
     if (method=='fo') {
         var bigweis = ['', '万', '亿', '兆', '京', '垓', '秭', '穰', '沟', '涧', '正', '载', '极', '恒河沙', '阿僧祗', '那由他', '不可思议', '无量', '大数'];
@@ -295,7 +298,7 @@ function transBigWei(t) {
     //     }
     // }
 
-    t = t.replace(/(.)/g,"$1 ").trim();
+    if (space) {t = t.replace(/(.)/g,"$1 ").trim()};
     return t;
 }
 
@@ -313,13 +316,13 @@ function transBigWei(t) {
 //   console.log(x);
 // })
 
-for (let i = 1; i <= 200; i++) {
-    let n = Math.floor(Math.random()*45)+10;
-    let c = smart_0_Num_grid(n)
-    let x = transBox(splitNumStr(c));
-    // console.log(c);
-    console.log(x);
-}
+// for (let i = 1; i <= 200; i++) {
+//     let n = Math.floor(Math.random()*45)+10;
+//     let c = smart_0_Num_grid(n)
+//     let x = transBox(splitNumStr(c));
+//     // console.log(c);
+//     // console.log(x);
+// }
 
 
 // let c = "85050090000800700500000000330080600800";
